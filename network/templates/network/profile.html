@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <div  style="padding-top: 20px; padding-bottom: 15px; padding-left: 3%; background-color: gray;">
+        <h2>{{ profile.username }}</h2>
+        <p>Followers: {{ profile.following.count }}</p>
+        {% if user.is_authenticated %}
+            {% if user != profile %}
+                {% if is_following %}
+                    <p><a href="{% url 'unfollow' profile.id %}">Unfollow</a></p>
+                {% else %}
+                    <p><a href="{% url 'follow' profile.id %}">Follow</a></p>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+    </div>
+
+    {% for post in posts.all %}
+    <div class="container" style="margin-top: 5px; padding: 15px; border-style:groove; border-radius: 7px;">
+        <h6><a href="{% url 'profile' post.poster.id %}">{{ post.poster.username }}</a></h6>
+        <p>{{ post.content | linebreaks }}</p>
+        <p>{{ post.likes }}</p>
+        <p>{{ post.time }}</p>
+    </div>
+    {% endfor %}
+
+{% endblock %}
